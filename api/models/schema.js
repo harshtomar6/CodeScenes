@@ -6,9 +6,10 @@ const bcrypt = require('bcrypt-nodejs');
 let postSchema = mongoose.Schema({
   timestamp: {type: Date, default: Date.now},
   title: {type: String, required: true},
-  content: {type: Array, required: true}, 
+  content: {type: String, required: true}, 
   author: {type: mongoose.Schema.Types.ObjectId, required: true},
-  isPublished: Boolean
+  isPublished: Boolean,
+  comments: Array
 })
 
 //User Schema
