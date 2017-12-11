@@ -3,13 +3,19 @@ const express = require('express');
 const router = express.Router();
 const postController = require('./../controllers/postController');
 
+router.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
+
 //API home route
-router.get('/', (req, res) => {
-  res.send('API Working');
+router.get('/', (req, res, next) => {
+  res.json('API Working');
 })
 
 //Route to get all posts
-router.get('/getAllPosts', (req, res) => {
+router.get('/getAllPosts', (req, res, next) => {
   postController.getPosts((err, posts) => {
     if(err)
       res.status(500).json(err);
@@ -19,7 +25,7 @@ router.get('/getAllPosts', (req, res) => {
 })
 
 //Route to add new post
-router.post('/addPost', (req, res) => {
+router.post('/addPost', (req, res, next) => {
   if(req.session.userid){
     req.body.author = req.session.userid;
     postController.addPost(req.body, (err, post) => {
@@ -34,7 +40,7 @@ router.post('/addPost', (req, res) => {
 })
 
 //Route to publish post
-router.post('/publish', (req, res) => {
+router.post('/publish', (req, res, next) => {
   if(req.session.userid)
     postController.publishPost(req.body.id, (err, doc) => {
       if(err)
@@ -45,7 +51,7 @@ router.post('/publish', (req, res) => {
 })
 
 //Route to update post
-router.post('/updatePost', (req, res) => {
+router.post('/updatePost', (req, res, next) => {
   if(req.session.userid)
     postController.updatePost(req.body.id, req.body.data, req.session.userid, (err, post) => {
       if(err)
@@ -59,7 +65,7 @@ router.post('/updatePost', (req, res) => {
 })
 
 //Route to delete post
-router.post('/deletePost', (req, res) => {
+router.post('/deletePost', (req, res, next) => {
   if(req.session.userid)
     postController.deletePost(req.body.id, req.session.userid, (err, success) => {
       if(err)

@@ -4,8 +4,14 @@ const router = express.Router();
 const userController = require('./../controllers/userController');
 const postController = require('./../controllers/postController');
 
+router.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
+
 //Route to user Posts;
-router.get('/', (req, res) => {
+router.get('/', (req, res, next) => {
   if(req.session.userid)
     postController.getUserPost(req.session.userid, (err, posts) => {
       if(err)
@@ -18,7 +24,7 @@ router.get('/', (req, res) => {
 });
 
 //Route to create new user
-router.post('/newUser', (req, res) => {
+router.post('/newUser', (req, res, next) => {
   userController.createUser(req.body, (err, user) => {
     if(err)
       res.status(500).json(err);
@@ -28,7 +34,7 @@ router.post('/newUser', (req, res) => {
 })
 
 //Route to authenticate user
-router.post('/login', (req, res) => {
+router.post('/login', (req, res, next) => {
   userController.authenticateUser(req.body, (err, user) => {
     if(err)
       res.status(403).json(err);
@@ -40,7 +46,7 @@ router.post('/login', (req, res) => {
 })
 
 //Route to logout user
-router.get('/logout', (req, res) => {
+router.get('/logout', (req, res, next) => {
   req.session.userid = null;
   if(req.session.userid)
     res.status(500).json('An Error Occured');
