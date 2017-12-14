@@ -37,7 +37,7 @@ router.post('/newUser', (req, res, next) => {
 router.post('/login', (req, res, next) => {
   userController.authenticateUser(req.body, (err, user) => {
     if(err)
-      res.status(403).json(err);
+      res.status(401).json(err);
     else{
       req.session.userid = user._id;
       res.status(200).json(user);

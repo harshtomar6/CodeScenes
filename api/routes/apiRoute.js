@@ -48,6 +48,8 @@ router.post('/publish', (req, res, next) => {
       else
         res.status(200).json('Post Published Successfully!')
     })
+  else
+    res.status(403).json('Please Login First');
 })
 
 //Route to update post
