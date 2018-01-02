@@ -8,20 +8,23 @@ const User = mongoose.model('User', schema.userSchema);
 
 //Get All Posts
 let getAllPosts = (callback) => {
-  Post.find({isPublished: true}, 'title comments author', (err, success) => {
+  Post.find({isPublished: true}, '_id title comments author', (err, success) => {
     let data = [];
     let count = 0;
 
     success.forEach((post, index, array) => {
-      User.findOne({_id: post.author}, 'name description', (err, author) => {
+      User.findOne({_id: post.author}, 'name description email',
+      (err, author) => {
         count++;
         data.push({
+          id: post._id,
           title: post.title,
           comments: post.comments.length,
           author: {
             name: author.name,
-            description: author.description
-          }
+            description: author.description,
+          },
+          link: author.email.split('@')[0]+'/'+post.title.toLowerCase().split(' ').join('-')
         })
 
         if(count === array.length){

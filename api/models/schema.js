@@ -6,10 +6,10 @@ const bcrypt = require('bcrypt-nodejs');
 let postSchema = mongoose.Schema({
   timestamp: {type: Date, default: Date.now},
   title: {type: String, required: true},
-  content: {type: String, required: true}, 
+  content: {type: String, required: true},
   author: {type: mongoose.Schema.Types.ObjectId, required: true},
   isPublished: Boolean,
-  comments: Array
+  comments: Array,
 })
 
 //User Schema
@@ -18,7 +18,7 @@ let userSchema = mongoose.Schema({
   password: {type: String, required: true},
   name: {type: String, required: true},
   description: String,
-  avatar: String
+  avatar: String,
 })
 
 userSchema.methods.genHash = (password) => {
