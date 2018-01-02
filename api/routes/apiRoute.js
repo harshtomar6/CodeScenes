@@ -16,7 +16,7 @@ router.get('/', (req, res, next) => {
 
 //Route to get all posts
 router.get('/getAllPosts', (req, res, next) => {
-  postController.getPosts((err, posts) => {
+  postController.getAllPosts((err, posts) => {
     if(err)
       res.status(500).json(err);
     else

@@ -4,12 +4,32 @@ const schema = require('./../models/schema');
 
 //Models
 const Post = mongoose.model('Post', schema.postSchema);
-
+const User = mongoose.model('User', schema.userSchema);
 
 //Get All Posts
-let getPosts = (callback) => {
-  Post.find({isPublished: true}, (err, success) => {
-    callback(err, success);
+let getAllPosts = (callback) => {
+  Post.find({isPublished: true}, 'title comments author', (err, success) => {
+    let data = [];
+    let count = 0;
+
+    success.forEach((post, index, array) => {
+      User.findOne({_id: post.author}, 'name description', (err, author) => {
+        count++;
+        data.push({
+          title: post.title,
+          comments: post.comments.length,
+          author: {
+            name: author.name,
+            description: author.description
+          }
+        })
+
+        if(count === array.length){
+          return callback(err, data);
+        }
+
+      })
+    })
   })
 }
 
@@ -52,7 +72,7 @@ let deletePost = (id, author, callback) => {
 
 module.exports = {
   addPost,
-  getPosts,
+  getAllPosts,
   deletePost,
   updatePost,
   getUserPost,
