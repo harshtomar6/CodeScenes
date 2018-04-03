@@ -52,8 +52,30 @@ let authenticateUser = (data, callback) => {
   })
 }
 
+// Creates or find User for React Workshop
+let createOrFindUser = (data, callback) => {
+  User.findOne({email: data.email}, (err, user) => {
+    if(err)
+      return callback(err, null);
+    else{
+      if(user)
+        return callback(null, user);
+      else{
+
+        let user = new User(data);
+        user.password = user.genHash(data.password);
+
+        user.save((err, doc) => {
+          return callback(err, doc);
+        })
+      }
+    }
+  })
+}
+
 module.exports = {
   getAllUsers,
   createUser,
-  authenticateUser
+  authenticateUser,
+  createOrFindUser
 }

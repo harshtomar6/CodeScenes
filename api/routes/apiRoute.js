@@ -14,18 +14,18 @@ router.get('/', (req, res, next) => {
   res.json('API Working');
 })
 
-//Route to get all posts
-router.get('/getAllPosts', (req, res, next) => {
+// Route to get all posts
+router.get('/post', (req, res, next) => {
   postController.getAllPosts((err, posts) => {
     if(err)
       res.status(500).json(err);
     else
       res.status(200).json(posts);
   })
-})
+});
 
-//Route to add new post
-router.post('/addPost', (req, res, next) => {
+// Route to add new post
+router.post('/post', (req, res, next) => {
   if(req.session.userid){
     req.body.author = req.session.userid;
     postController.addPost(req.body, (err, post) => {
@@ -67,7 +67,7 @@ router.post('/updatePost', (req, res, next) => {
 })
 
 //Route to delete post
-router.post('/deletePost', (req, res, next) => {
+router.delete('/post', (req, res, next) => {
   if(req.session.userid)
     postController.deletePost(req.body.id, req.session.userid, (err, success) => {
       if(err)

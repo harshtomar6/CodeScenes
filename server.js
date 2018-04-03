@@ -29,6 +29,7 @@ app.use(session({secret: config.SESSION_SECRET, resave: true, saveUninitialized:
 //Logger middleware
 app.use(logger('dev'));
 
+app.use(express.static(__dirname+'/src'));
 //Set App Routes
 app.use('/', homeRoute);
 app.use('/api', apiRoute);

@@ -21,6 +21,7 @@ let getAllPosts = (callback) => {
           title: post.title,
           comments: post.comments.length,
           author: {
+            authorid: post.author,
             name: author.name,
             description: author.description,
           },
@@ -47,8 +48,29 @@ let getUserPost = (id, callback) => {
 let addPost = (data, callback) => {
   let post = new Post(data);
 
-  post.save((err, success) => {
-    return callback(err, success);
+  User.findOne({_id: data.author}, (err, doc) => {
+    if(doc == null)
+      return callback('Userid Not Found', null);
+
+    if(doc)
+      post.save((err, success) => {
+        return callback(err, success);
+      })
+    else
+      return callback(err, null);
+  });
+}
+
+// Get a specific post
+let getPost = (postid, callback) => {
+  Post.findOne({_id: postid}, (err, success) => {
+    if(success == null)
+      return callback('No Post Found', null);
+    
+    if(err)
+      return callback(err, null);
+    else
+      return callback(null, success);
   })
 }
 
@@ -68,14 +90,25 @@ let updatePost = (id, data, author, callback) => {
 
 //Delete post
 let deletePost = (id, author, callback) => {
-  Post.remove({_id: id, author: author}, (err, success) => {
-    callback(err, callback);
+  Post.findOne({_id: id, author: author}, (err, success) => {
+    if(success == null)
+      return callback('No Post Found', null);
+    
+    if(err)
+      return (err, null);
+    else{
+      Post.remove({_id: id, author: author}, (err, deleted) => {
+        callback(err, success);
+      })
+    }
   })
 }
+
 
 module.exports = {
   addPost,
   getAllPosts,
+  getPost,
   deletePost,
   updatePost,
   getUserPost,

@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>React Blog API</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+</head>
+<body>
+  
+  <div class="container">
+    <h3>React blog API Reference</h3>
+    <code>Before using this API, You need to register for userid. <a href="/get-userid">Get userid</a></code>
+
+    <div class="table-responsive" style="margin-top:50px">
+    <table class="table">
+      <tr>
+        <th>Endpoint</th>
+        <th>Method</th>
+        <th>Example</th>
+        <th>Description</th>
+        <th>Sample Response</th>
+      </tr>
+      <tr>
+        <td>/post/:userid</td>
+        <td>GET</td>
+        <td>https://code-scenes.herokuapp.com/post/5a2cd5eb7c1c55239c9a38dc</td>
+        <td>Fetches all Posts of a user</td>
+        <td>
+          <pre>
+[
+    {
+        "_id": "5a2f90ae7b3b433b4cd30c1a",
+        "title": "This is my First Post",
+        "content": "Nothing Much Here, Just Testing...!!",
+        "author": "5a2cd5eb7c1c55239c9a38dc",
+        "__v": 0,
+        "comments": [],
+        "timestamp": "2017-12-12T08:17:50.932Z"
+    },
+    {
+        "_id": "5a4b7465362bac00049bfded",
+        "title": "How to make a Download Organizer in Python",
+        "content": "Well, We should do it sometimes, it's pretty fun",
+        "author": "5a2cd5eb7c1c55239c9a38dc",
+        "__v": 0,
+        "comments": [],
+        "timestamp": "2018-01-02T12:00:37.562Z"
+    }
+]
+          </pre>
+        </td>
+      </tr>
+      <tr>
+        <td>/post/:userid/:postid</td>
+        <td>GET</td>
+        <td>https://code-scenes.herokuapp.com/post/5a2cd5eb7c1c55239c9a38dc/5a4b7465362bac00049bfded</td>
+        <td>Fetches a specific post of a user</td>
+        <td>
+          <pre>
+{
+    "_id": "5a2f90ae7b3b433b4cd30c1a",
+    "title": "This is my First Post",
+    "content": "Nothing Much Here, Just Testing...!!",
+    "author": "5a2cd5eb7c1c55239c9a38dc",
+    "__v": 0,
+    "comments": [],
+    "timestamp": "2017-12-12T08:17:50.932Z"
+}
+          </pre>
+        </td>
+      </tr>
+      <tr>
+        <td>/post/:userid</td>
+        <td>POST</td>
+        <td>https://code-scenes.herokuapp.com/post/5a2cd5eb7c1c55239c9a38dc</td>
+        <td>Creates a New Post and returns the created post</td>
+        <td>
+          <pre>
+{
+    "__v": 0,
+    "title": "Testing Again",
+    "content": "This is the test content of a new post",
+    "author": "5a2cd5eb7c1c55239c9a38dc",
+    "_id": "5ac25e0dff971473185a4415",
+    "comments": [],
+    "timestamp": "2018-04-02T16:45:01.359Z"
+}
+          </pre>
+        </td>
+      </tr>
+    </tr>
+    <tr>
+      <td>/post/:userid/:postid</td>
+      <td>DELETE</td>
+      <td>https://code-scenes.herokuapp.com/post/5a2cd5eb7c1c55239c9a38dc/5a4b7465362bac00049bfded</td>
+      <td>Deletes a Post and returns the deleted Post</td>
+      <td>
+        <pre>
+{
+  "__v": 0,
+  "title": "Testing Again",
+  "content": "This is the test content of a new post",
+  "author": "5a2cd5eb7c1c55239c9a38dc",
+  "_id": "5ac25e0dff971473185a4415",
+  "comments": [],
+  "timestamp": "2018-04-02T16:45:01.359Z"
+}
+        </pre>
+      </td>
+    </tr>
+    </table>
+  </div>
+
+  <div class="col-xs-12" style="margin-top: 40px;">
+    <p class="text-center">
+    <a class="btn btn-success" href="/get-userid" style="font-size: 1.5em; padding: 8px 25px">Get userid</a>
+    </p>
+  </div>
+  </div>
+
+</body>
+</html>

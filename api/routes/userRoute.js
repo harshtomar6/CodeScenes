@@ -24,8 +24,9 @@ router.get('/', (req, res, next) => {
 });
 
 //Route to create new user
-router.post('/newUser', (req, res, next) => {
-  userController.createUser(req.body, (err, user) => {
+router.post('/', (req, res, next) => {
+  console.log(req.body);
+  userController.createOrFindUser(req.body, (err, user) => {
     if(err)
       res.status(500).json(err);
     else

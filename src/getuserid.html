@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Register</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <style>
+    #loader {
+      border: 5px solid #f3f3f3; /* Light grey */
+      border-top: 5px solid #3498db; /* Blue */
+      border-radius: 50%;
+      width: 35px;
+      height: 35px;
+      animation: spin 1s linear infinite;
+      margin-top: 10px;
+      display: none;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+  
+  <div class="container">
+    <div>
+      <h3>Get Userid</h3>
+      <code>Please fill up the following details to get userid</code>
+    </div>
+    
+    <div class="row"  style="margin-top: 50px">
+      <div class="col-xs-12 col-md-6 col-sm-6">
+        <form class="form">
+          <div class="form-group">
+            <label for="name">Name</label>
+            <input type="text" class="form-control" id="name" name="name" required />
+          </div>
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" class="form-control" id="email" name="email" required />  
+          </div>
+          <input type="submit" class="btn btn-primary" value="Submit"/>
+          <div id="loader"></div>
+        </form>
+      </div>
+
+      <div class="col-xs-12 col-md-6 col-sm-6">
+        <div class="well">
+          <h3>USER ID</h3>
+          <h4 id="userid">-</h4>
+        </div>
+      </div>
+    </div>
+  
+  </div>
+
+  <script>
+    var form = document.getElementsByTagName('form')[0];
+
+    form.addEventListener('submit', function(e){
+      e.preventDefault();
+      //Show Loader
+      document.getElementById('loader').style.display = 'block';
+
+      var name = document.getElementById('name').value;
+      var email = document.getElementById('email').value;
+      let err = false;
+
+      fetch('/user', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({name: name, email: email, password: 'reactworkshop'})
+      })
+        .then(res => {
+          if(!res.ok)
+            err = true;
+          
+          return res.json();
+        })
+        .then(res => {
+          if(err)
+            throw res;
+          document.getElementById('loader').style.display = 'none';
+
+          let idArea = document.getElementById('userid');
+          idArea.innerText = res._id;
+        })
+        .catch(err => {
+          document.getElementById('loader').style.display = 'none';
+          alert(err);
+        })
+    });
+  </script>
+</body>
+</html>
