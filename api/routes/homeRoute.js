@@ -24,7 +24,7 @@ router.get('/get-userid', (req, res, next) => {
 // get all posts of a user
 router.get('/post/:userid', (req, res, next) => {
   if(req.params.userid){
-    postController.getUserPost(req.params.userid, (err, posts) => {
+    postController.getUserTestPost(req.params.userid, (err, posts) => {
       if(err)
         res.status(500).json(err);
       else
@@ -36,7 +36,7 @@ router.get('/post/:userid', (req, res, next) => {
 
 // get a specific post of a specfic user
 router.get('/post/:userid/:postid', (req, res, next) => {
-  postController.getPost(req.params.postid, (err, post) => {
+  postController.getTestPost(req.params.postid, (err, post) => {
     if(err)
       res.status(500).json(err);
     else

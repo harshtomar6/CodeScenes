@@ -2,8 +2,8 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt-nodejs');
 
-//Post Schema
-let postSchema = mongoose.Schema({
+// Test Post Schema
+let testPostSchema = mongoose.Schema({
   timestamp: {type: Date, default: Date.now},
   title: {type: String, required: true},
   content: {type: String, required: true},
@@ -12,13 +12,25 @@ let postSchema = mongoose.Schema({
   comments: Array,
 })
 
+//Post Schema
+let postSchema = mongoose.Schema({
+  timestamp: {type: Date, default: Date.now},
+  headerImage: {type: String, default: 'none'},
+  title: {type: String, required: true},
+  content: {type: String, required: true}, 
+  author: {type: mongoose.Schema.Types.ObjectId, required: true},
+  isPublished: {type: Boolean, default: false},
+  likes: {type: Array, default: []},
+  comments: {type: Array, default: []},
+})
+
 //User Schema
 let userSchema = mongoose.Schema({
   email: {type: String, required: true},
   password: {type: String, required: true},
   name: {type: String, required: true},
-  description: String,
-  avatar: String,
+  description: {type: String, default: 'No description'},
+  avatar: {type: String, default: 'none'},
 })
 
 userSchema.methods.genHash = (password) => {
@@ -31,5 +43,6 @@ userSchema.methods.compareHash = function(password){
 
 module.exports = {
   postSchema,
-  userSchema
+  userSchema,
+  testPostSchema
 };

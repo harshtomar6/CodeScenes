@@ -1,6 +1,8 @@
 //Dependencies
-let mongoose = require('mongoose');
-let schema = require('./../models/schema');
+const mongoose = require('mongoose');
+const { ObjectId } = require('mongodb');
+const schema = require('./../models/schema');
+const jwt = require('jwt-simple');
 
 //Model
 let User = mongoose.model('User', schema.userSchema);
@@ -38,17 +40,32 @@ let createUser = (data, callback) => {
 let authenticateUser = (data, callback) => {
   User.findOne({email: data.email}, (err, user) => {
     if(err)
-      return callback(err, null);
+      return callback(err, 500, null);
     else{
       if(!user)
-        return callback('User not found!', null);
+        return callback('User not found!', 401, null);
       else{
         if(user.compareHash(data.password))
-          return callback(null, user)
+          return callback(null, 200, generateToken(user))
         else
-          return callback('Wrong Password!', null);
+          return callback('Wrong Password!', 401, null);
       }
     }
+  })
+}
+
+// Finds a particulat User
+let getUserById = (id, callback) => {
+  if(!ObjectId.isValid(id))
+    return callback('Invalid User Key', 401, null);
+  
+  User.findOne({_id: id}, (err, user) => {
+    if(err)
+      return callback(err, 500, null);
+    else if(!user)
+      return callback('No User Found', 400, null);
+    else
+      return callback(null, 200, user);
   })
 }
 
@@ -73,9 +90,28 @@ let createOrFindUser = (data, callback) => {
   })
 }
 
+let generateToken = user => {
+  let expires = expiresIn(7);
+  let token = jwt.encode({
+    exp: expires
+  }, process.env.SESSION_SECRET);
+
+  return {
+    token,
+    expires,
+    user 
+  }
+}
+
+let expiresIn = (num) => {
+  let date = new Date();
+  return date.setDate(date.getDate() + num);
+}
+
 module.exports = {
   getAllUsers,
   createUser,
   authenticateUser,
-  createOrFindUser
+  createOrFindUser,
+  getUserById
 }
