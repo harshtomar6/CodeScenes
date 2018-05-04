@@ -40,7 +40,7 @@ router.post('/post', config.validateRequest, (req, res, next) => {
     if(err)
       res.status(500).json({err: err, data: null});
     else
-      res.status(200).json(post);
+      res.status(200).json({err: err, data: post});
   })
 })
 
